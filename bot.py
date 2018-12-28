@@ -19,11 +19,12 @@ class Wikipedia(commands.Bot):
 
     async def start(self):
         self.session = aiohttp.ClientSession(loop=self.loop)
+        self.wiki = aiowiki.Wiki.wikipedia("en", session=self.session)
 
         for ext in config.exts:
             self.load_extension(ext)
 
-        super().run(config.token, bot=True)
+        await super().start(config.token, bot=True)
 
 
 if __name__ == "__main__":

@@ -13,7 +13,7 @@ class Search:
         if not pages:
             return await ctx.send("No results.")
         best_match = pages[0]
-        text_of_match, match_urls = await best_match.text, await best_match.urls
+        text_of_match, match_urls = await best_match.summary, await best_match.urls
         embed = discord.Embed(
             title=best_match.title,
             url=match_urls.view,
