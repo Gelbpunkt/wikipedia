@@ -6,16 +6,30 @@ from discord.ext import commands
 
 import config
 
-bot = commands.Bot(command_prefix="wiki ", case_insensitive=True)
-
-
-async def start():
-    bot.session = aiohttp.ClientSession(loop=bot.loop)
-    bot.wiki = aiowiki.Wiki.wikipedia("en", session=bot.session)
-    for ext in config.exts:
-        bot.load_extension(ext)
-    await bot.start(config.token)
-
-
+class Wikipedia(commands.Bot):
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        self.owners = [356091260429402122, 340745895932854272]
+        self.session = None
+        
+    def __repr__(self):
+        return "Wikipedia Botto"
+    
+    async def start(self):
+        self.session = aiohttp.ClientSession(loop=self.loop)
+        
+        for ext in config.ext:
+            self.load_extension(ext)
+        
+        super().run(config.token, bot=True)
+        
 if __name__ == "__main__":
-    asyncio.get_event_loop().run_until_complete(start())
+    Wikipedia(
+        command_prefix=commands.when_mentioned_or(
+            "wiki "
+        ),
+        case_insensitive=True
+    )
+    .run()
