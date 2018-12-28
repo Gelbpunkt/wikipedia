@@ -1,11 +1,15 @@
 import discord
 import traceback
+import sys
 from discord.ext import commands
 
 
 class Events:
     def __init__(self, bot):
         self.bot = bot
+
+    async def on_ready(self):
+        print("Ready!")
 
     async def on_message(self, message):
         if message.author.bot:
