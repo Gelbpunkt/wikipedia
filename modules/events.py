@@ -1,21 +1,25 @@
-import discord
-import traceback
 import sys
+import traceback
+
+import discord
 from discord.ext import commands
 
 
-class Events:
+class Events(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.bot.on_command_error = self._on_command_error
 
+    @commands.Cog.listener()
     async def on_ready(self):
         print("Ready!")
 
+    @commands.Cog.listener()
     async def on_message(self, message):
         if message.author.bot:
             return
 
-    async def on_command_error(self, ctx, error):
+    async def _on_command_error(self, ctx, error):
         error = getattr(error, "original", error)
         if isinstance(error, discord.Forbidden):
             return
